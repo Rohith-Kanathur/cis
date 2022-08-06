@@ -29,5 +29,5 @@ public class Student extends CisBo{
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
 }
