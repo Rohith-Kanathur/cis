@@ -1,0 +1,365 @@
+In-Memory Depth First Tree Construction of Hierarchical Data in a RDBMS
+
+Database Relationships
+-> Database relationship refers to how data is one table is related to data in another table.
+-> The relationships between two tables is established using keys.
+-> A key in one table will normally relate to a key in another table
+
+DATABASE MODEL DESIGN
+-> We are implementing a College Information System(CIS).
+   Here a university is maintaining information about all the colleges that come under it.
+   
+    TABLE DESIGN
+		1. College Table      
+			
+			CollegeID				bigint			PK		NOT NULL, 
+			Name					varchar(32)		Unique	NOT NULL, 
+			
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+	
+			CHILDREN:
+				a) Address
+				b) Department
+	   		
+			DESCRIPTION
+			   Every college has an address and the address can be obtained from the address table.
+			   There is a one to one relationship between college and address table and typically, the
+			   college table will have a field called AddressID. AddressID is the primary key of address table.
+			   But in our design of hierarchial data model, the college table will NOT have the AddressID as a field. 
+			   Instead the address table will have the foreign key CollegeID in a generic way without restricting the
+			   use of address by other tables, as explained later.
+			   
+			   Every table will has a field called CollegeID which will be used to retrieve all the college related information
+			   from various tables in one shot, resulting in a two level tree in memory. This is done so as to ensure minimum 
+			   number of database hits.
+		    
+			Table No: 1 (Every table has a unique number and this will be used in the child table's field "ParentTableNo" as discussed later.)
+			
+			INDEXES: 
+					a) CollegeID  
+					b) Name
+			
+			DDL SCRIPT:
+				CREATE TABLE `college` (
+				  `CollegeID` bigint NOT NULL,
+				  `Name` varchar(32) NOT NULL,
+				  `CreateDateTime` datetime NOT NULL,
+				  `LastUpdateDateTime` datetime NOT NULL,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`CollegeID`),
+				  UNIQUE KEY `Name_UNIQUE` (`Name`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='College Table';
+
+	   
+	   2. Department Table
+	   
+			DepartmentID			bigint			PK		NOT NULL, 
+			Name					varchar(32)				NOT NULL, 
+
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+
+			CHILDREN:
+				a) Address
+				b) Faculty
+				c) Courses
+				
+			DESCRIPTION
+			   The Department table has two important fields ParentTableNo and ParentID.
+			   The ParentID will be the CollegeID and ParentTableNo will be 1 which represents the College table.
+			   			   
+			   A college can have multiple departments. There is a 1-to-many relationship between college and department.
+			   Department to Address is a 1-to-1 relationship. In order to make the tree construction generic, we are 
+			   NOT putting AddressID field in the department table but the address table will point to department table in
+			   a generic way.
+			   
+			   IMPORTANT NOTE THAT APPLIES TO ALL TABLES:
+			   Every table other than the root table (i.e the college table) has the two fields, ParentTableNo and ParentID.
+			   This will capture the relationship of a child to a parent. In some tables like address table, the address 
+			   can be a child of college, department, faculty and student. So the design of ParentTableNo and ParentID ensures 
+			   a generic way of capturing the parent-child relationship, which will allow us to write generic algorithms.
+			
+			Table No: 2 (Every table has a unique number and this will be used in the child table's field "ParentTableNo".)
+			
+			INDEXES: 
+					a) CollegeID,                      ex: Index is used in the query: select * from Department where CollegeID = 12345
+					b) ParentTableNo, ParentID         ex: Index is used in the query: select * from Department where ParentTableNo=1 and ParentID=12345 
+					c) DepartmentID
+					d) Name
+					
+			DDL SCRIPT:
+				CREATE TABLE `department` (
+				  `DepartmentID` bigint NOT NULL,
+				  `Name` varchar(32) NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL,
+				  `LastUpdateDateTime` datetime NOT NULL,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`DepartmentID`),
+				  KEY `idx_department_CollegeID` (`CollegeID`),
+				  KEY `idx_department_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Department Table';
+
+		
+			
+	    3. Faculty Table
+		
+			FacultyID			    bigint			PK		NOT NULL, 
+			Name					varchar(32)		Unique	NOT NULL,
+			Designation				tinyint					NULL allowed, (Lecturer-1, AsstProf - 2, AssociateProf - 3, Prof - 4, HOD - 5, Principal - 6)
+			
+
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+
+			CHILDREN:
+				a) Address
+
+			DESCRIPTION
+			   The Faculty table has two important fields ParentTableNo and ParentID.
+			   The ParentID will be the DepartmentID and ParentTableNo will be 2 which represents the Department table.
+			   			   
+			   Faculty to Address is a 1-to-1 relationship. In order to make the tree construction generic, we are 
+			   NOT putting AddressID field in the faculty table but the address table will point to faculty table in
+			   a generic way.
+			
+			Table No: 3 (Every table has a unique number and this will be used in the child table's field "ParentTableNo".)
+			
+			INDEXES: 
+					a) CollegeID,                      
+					b) ParentTableNo, ParentID        
+					c) FacultyID
+					d) Name
+																			
+			DDL SCRIPT:
+				CREATE TABLE `faculty` (
+				  `FacultyID` bigint NOT NULL,
+				  `Name` varchar(32) NOT NULL,
+				  `Designation` tinyint NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`FacultyID`),
+				  UNIQUE KEY `Name` (`Name`),
+				  KEY `idx_faculty_CollegeID` (`CollegeID`),
+				  KEY `idx_faculty_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Faculty Table';
+
+
+			
+			
+		4. Courses Table
+			
+			CourseID			    bigint			PK		NOT NULL, 
+			Name					varchar(32)		Unique	NOT NULL,
+
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table 
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+
+			CHILDREN:
+				a) CourseInstances
+
+			DESCRIPTION
+			   The courses table has two important fields ParentTableNo and ParentID.
+			   The ParentID will be the DepartmentID and ParentTableNo will be 2 which represents the Department table.
+			   
+			   Courses to CourseInstances is a 1-to-1 relationship.
+			   			   
+			Table No: 4 (Every table has a unique number and this will be used in the child table's field "ParentTableNo".)
+			
+			INDEXES: 
+					a) CollegeID                   
+					b) ParentTableNo, ParentID        
+					c) CourseID
+					d) Name
+			
+			DDL SCRIPT:
+				CREATE TABLE `courses` (
+				  `CourseID` bigint NOT NULL,
+				  `Name` varchar(32) NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`CourseID`),
+				  UNIQUE KEY `Name` (`Name`),
+				  KEY `idx_courses_CollegeID` (`CollegeID`),
+				  KEY `idx_courses_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+		
+		5. CourseInstances Table
+			
+			CourseInstanceID		bigint			PK		NOT NULL, 
+			StartDate				datetime				NOIT NULL,
+			EndDate					datetime				NOIT NULL,
+			
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table 
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+
+			CHILDREN:
+				a) CourseInstanceToStudent
+
+			DESCRIPTION
+			   The CourseInstance table has two important fields ParentTableNo and ParentID.
+			   The ParentID will be the CourseID and ParentTableNo will be 4 which represents the Courses table.
+			   
+			   CourseInstances to CourseInstanceToStudent is a 1-to-1 relationship.
+			
+			Table No: 5 (Every table has a unique number and this will be used in the child table's field "ParentTableNo".)
+			
+			INDEXES: 
+					a) CollegeID                   
+					b) ParentTableNo, ParentID        
+					c) CourseInstanceID
+			
+			DDL SCRIPT
+				CREATE TABLE `courseinstances` (
+				 `CourseInstanceID` bigint NOT NULL,
+				  `StartDate` date NOT NULL,
+				  `EndDate` date NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`CourseInstanceID`),
+				  KEY `idx_courseinstances_CollegeID` (`CollegeID`),
+				  KEY `idx_courseinstances_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+			
+		6. Student Table
+			
+			StudentID				bigint			PK		NOT NULL, 
+			Name					varchar(32)		Unique  NOT NULL,
+			
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table 
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+
+			CHILDREN:
+				a) Address
+
+			DESCRIPTION
+			   The Student table has two important fields ParentTableNo and ParentID.
+			   The ParentID will the CourseInstanceID and ParentTableNo will be 5 which represents the CourseInstance table.
+			   
+			   Student to Address is a 1-to-1 relationship.
+			   In order to make the tree construction generic, we are NOT putting AddressID field in the Student table 
+			   but the address table will point to Student table in a generic way.
+			   			   
+			Table No: 6 (Every table has a unique number and this will be used in the child table's field "ParentTableNo".)
+			
+			INDEXES: 
+					a) CollegeID                   
+					b) ParentTableNo, ParentID        
+					c) StudentID
+					d) Name
+			
+			DDL SCRIPT:
+				CREATE TABLE `student` (
+				  `StudentID` bigint NOT NULL,
+				  `Name` varchar(32) NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`StudentID`),
+				  UNIQUE KEY `Name` (`Name`),
+				  KEY `idx_student_CollegeID` (`CollegeID`),
+				  KEY `idx_student_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+	 
+			
+	    7. Address Table
+			AddressID				bigint 			PK		NOT NULL,
+			StreetAddress			varchar(100)			NOT NULL,
+			Area					varchar(100)			NULL allowed, 
+			City					varchar(50)				NOT NULL,
+			State					varchar(50)				NOT NULL,
+			PinCode					varchar(10)				NOT NULL,
+			Country					varchar(25)				NOT NULL
+			
+			CollegeID				bigint			FK		NOT NULL,
+			ParentTableNo			tinyint			PK		NOT NULL, an integer that represent a table
+			ParentID				bigint			FK		NOT NULL, the primary key in the parent table 
+			CreateDateTime			datetime 				NOT NULL,
+			LastUpdateDateTime		datetime				NOT NULL,
+			LastUpdateUser			varchar(32)				NOT NULL
+			
+			
+			CHILDREN:
+				NONE
+			
+			DESCRIPTION
+			   A row in the address table can be a child of college, department, faculty and student. 
+			   The design of ParentTableNo and ParentID ensures a generic way of capturing the parent-child relationship.
+			   ParentTableNo can be either 1 (College), 2 (Department), 3 (Faculty) and 6 (Student).
+			   This design will allow us to write generic algorithms.
+			
+			Table No: 7 (Every table has a unique number)
+			
+			INDEXES: 
+					a) CollegeID                   
+					b) ParentTableNo, ParentID        
+					c) AddressID
+			
+			DDL SCRIPT:
+				CREATE TABLE `address` (
+				  `AddressID` bigint NOT NULL,
+				  `StreetAddress` varchar(100) NOT NULL,
+				  `Area` varchar(100) DEFAULT NULL,
+				  `City` varchar(100) NOT NULL,
+				  `State` varchar(100) NOT NULL,
+				  `PinCode` varchar(10) NOT NULL,
+				  `Country` varchar(100) NOT NULL,
+				  `CollegeID` bigint NOT NULL,
+				  `ParentTableNo` tinyint NOT NULL,
+				  `ParentID` bigint NOT NULL,
+				  `CreateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateDateTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				  `LastUpdateUser` varchar(32) NOT NULL,
+				  PRIMARY KEY (`AddressID`),
+				  KEY `idx_address_CollegeID` (`CollegeID`),
+				  KEY `idx_address_ParentTableNo_ParentID` (`ParentTableNo`,`ParentID`)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Address Table';
+
+
+			
+			
+			
