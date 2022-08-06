@@ -11,16 +11,20 @@ public class Address extends CisBo{
 	private String country;
 	
 	public Address() {
-		tableNo = 7;
-		
-		hasDepartmentAsChild = false;
-		hasFacultyAsChild = false;
-		hasCourseAsChild = false;
-		hasCourseInstanceAsChild = false;
-		hasStudentAsChild = false;
-		hasAddressAsChild = false;				
+		tableNo = 7;			
 	}
 	
+	@Override
+	public void recursiveTreeBuilding(Pool pool) {
+		return;
+	}
+	
+	@Override
+	public void recursivePrintTree() {
+		System.out.println("Printing Address Info");
+		System.out.println(this);
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(addressID);

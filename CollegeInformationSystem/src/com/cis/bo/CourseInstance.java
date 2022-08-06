@@ -9,19 +9,28 @@ public class CourseInstance extends CisBo{
 	private Date startDate;
 	private Date endDate;
 	
+	private ArrayList<Student> studentList = null;
+	
 	public CourseInstance() {
 		tableNo = 5;
-		
-		studentList = new ArrayList<Student>();
-		
-		hasDepartmentAsChild = false;
-		hasFacultyAsChild = false;
-		hasCourseAsChild = false;
-		hasCourseInstanceAsChild = false;
-		hasStudentAsChild = true;
-		hasAddressAsChild = false;				
 	}
 	
+	@Override
+	public void recursiveTreeBuilding(Pool pool) {
+		studentList = pool.extractStudentList(tableNo, primaryKey);			
+		for (int i = 0; i < studentList.size(); i++)
+			studentList.get(i).recursiveTreeBuilding(pool);
+	}
+	
+	@Override
+	public void recursivePrintTree() {
+		System.out.println("Printing CourseInstance Info");
+		System.out.println(this);
+
+		for (int i = 0; i < studentList.size(); i++)
+			studentList.get(i).recursivePrintTree();
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(courseInstanceID);

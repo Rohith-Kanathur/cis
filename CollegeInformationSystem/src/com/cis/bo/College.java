@@ -6,28 +6,55 @@ public class College extends CisBo {
 	
 	private long collegeID;
 	private String name;
-	private Address address;
 	
 	private Pool pool;
+
+	private ArrayList<Department> departmentList = null;
+	private Address address = null;	
 	
 	public College() {
 		tableNo = 1;
 		
-		departmentList = new ArrayList<Department>();
-		
 		parentTableNo = 0;
 		parentID = 0;
-		
-		hasDepartmentAsChild = true;
-		hasFacultyAsChild = false;
-		hasCourseAsChild = false;
-		hasCourseInstanceAsChild = false;
-		hasStudentAsChild = false;
-		hasAddressAsChild = true;		
 		
 		pool = new Pool();
 	}
 
+	public void buildTreeUsingPool() {
+		recursiveTreeBuilding(pool);
+		return;
+	}
+
+	@Override
+	public void recursiveTreeBuilding(Pool pool) {
+		departmentList = pool.extractDepartmentList(tableNo, primaryKey);			
+		for (int i = 0; i < departmentList.size(); i++)
+			departmentList.get(i).recursiveTreeBuilding(pool);
+		
+		address = pool.extractAddress(tableNo, primaryKey);
+		// No need to recurse on address as address is a leaf node.	
+	}
+	
+	public void printTree() {
+		System.out.println();
+		System.out.println("Printing the Tree after Extraction: ");
+		
+		recursivePrintTree();
+	}
+	
+	@Override
+	public void recursivePrintTree() {
+		System.out.println();
+		System.out.println("Printing College Info");
+		System.out.println(this);
+
+		for (int i = 0; i < departmentList.size(); i++)
+			departmentList.get(i).recursivePrintTree();
+		
+		address.recursivePrintTree();		
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(collegeID);
@@ -110,8 +137,4 @@ public class College extends CisBo {
 		this.pool = pool;
 	}
 	
-	public void buildTreeUsingPool() {
-		recursiveTreeBuilding(pool);
-		return;
-	}
 }

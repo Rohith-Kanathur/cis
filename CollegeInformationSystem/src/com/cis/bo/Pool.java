@@ -38,61 +38,68 @@ public class Pool {
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Department Objects");
 		for (int i = 0; i < departmentList.size(); i++)
 			System.out.print(departmentList.get(i));
 		System.out.println();
-		
+		*/
 		
 		if (! poolDB.loadFacultyList(collegeID, facultyList) )
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Faculty Objects");
 		for (int i = 0; i < facultyList.size(); i++)
 				System.out.print(facultyList.get(i));
 		System.out.println();		
-		
+		*/
 			
 		if (! poolDB.loadCourseList(collegeID, courseList) )
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Course Objects");
 		for (int i = 0; i < courseList.size(); i++)
 			System.out.print(courseList.get(i));
 		System.out.println();	
-		
+		*/
 		
 		if (! poolDB.loadCourseInstanceList(collegeID, courseInstanceList) )
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Course Instance Objects");
 		for (int i = 0; i < courseInstanceList.size(); i++)
 			System.out.print(courseInstanceList.get(i));
 		System.out.println();	
-		
+		*/
 		
 		if (! poolDB.loadStudentList(collegeID, studentList) )
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Student Objects");
 		for (int i = 0; i < studentList.size(); i++)
 			System.out.print(studentList.get(i));
 		System.out.println();	
-		
+		*/
 		
 		if (! poolDB.loadAddressList(collegeID, addressList) )
 			return false;
 		
 		// Debug Code
+		/*
 		System.out.println("Printing Address Objects");
 		for (int i = 0; i < addressList.size(); i++)
 				System.out.print(addressList.get(i));
 		System.out.println();
-				
+		*/
+		
 		return true;
 	}
 

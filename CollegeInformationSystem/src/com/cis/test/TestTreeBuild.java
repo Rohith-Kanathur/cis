@@ -15,7 +15,7 @@ public class TestTreeBuild {
 	    	return;
 	    }
 	    
-	    System.out.println(college);
+	    //System.out.println(college);
 	    
 	    /*
 	    // Get Current Time
@@ -23,7 +23,8 @@ public class TestTreeBuild {
 	    */
 	    
 	    college.getPool().loadPool(college.getCollegeID());
-	    //college.buildTreeUsingPool();
+	    college.buildTreeUsingPool();
+	    college.printTree();
 	    
 	    /*
 	    // Get Current Time

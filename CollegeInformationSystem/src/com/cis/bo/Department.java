@@ -7,18 +7,40 @@ public class Department extends CisBo {
 	private long departmentID;
 	private String name;
 	
+	private ArrayList<Faculty> facultyList = null;
+	private ArrayList<Course> courseList = null;
+	private Address address = null;	
+	
 	public Department() {
 		tableNo = 2;
+	}
+	
+	@Override
+	public void recursiveTreeBuilding(Pool pool) {
+		facultyList = pool.extractFacultyList(tableNo, primaryKey);			
+		for (int i = 0; i < facultyList.size(); i++)
+			facultyList.get(i).recursiveTreeBuilding(pool);
 		
-		this.facultyList = new ArrayList<Faculty>();
-		this.courseList = new ArrayList<Course>();
+		courseList = pool.extractCourseList(tableNo, primaryKey);			
+		for (int i = 0; i < courseList.size(); i++)
+			courseList.get(i).recursiveTreeBuilding(pool);
 		
-		hasDepartmentAsChild = false;
-		hasFacultyAsChild = true;
-		hasCourseAsChild = true;
-		hasCourseInstanceAsChild = false;
-		hasStudentAsChild = false;
-		hasAddressAsChild = true;		
+		address = pool.extractAddress(tableNo, primaryKey);
+		// No need to recurse on address as address is a leaf node.	
+	}
+	
+	@Override
+	public void recursivePrintTree() {
+		System.out.println("Printing Department Info");
+		System.out.println(this);
+
+		for (int i = 0; i < facultyList.size(); i++)
+			facultyList.get(i).recursivePrintTree();
+		
+		for (int i = 0; i < courseList.size(); i++)
+			courseList.get(i).recursivePrintTree();
+
+		address.recursivePrintTree();		
 	}
 	
 	public String toString() {

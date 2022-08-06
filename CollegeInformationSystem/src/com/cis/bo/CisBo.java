@@ -1,6 +1,5 @@
 package com.cis.bo;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public abstract class CisBo {
@@ -24,60 +23,8 @@ public abstract class CisBo {
 	// as user has not changed the data that is provided from the database.	
 	private boolean dirtyFlag; 
 	
-	// ChildObjects and ChildLists: 
-	// ChildLists are Required in base class for Recursive Traversals.
-	// ChildLists will be null if the child is not applicable for a given derived class.
-	// Get and Set methods are available only in derived class if a given child is applicable.
-	protected ArrayList<Department> departmentList = null;
-	protected ArrayList<Faculty> facultyList = null;
-	protected ArrayList<Course> courseList = null;
-	protected ArrayList<CourseInstance> courseInstanceList;
-	protected ArrayList<Student> studentList;
-	protected Address address = null;	
-
-	// ChildExistFlags: Flags that tell if children exists or not.
-	protected boolean hasDepartmentAsChild = false;
-	protected boolean hasFacultyAsChild = false;
-	protected boolean hasCourseAsChild = false;
-	protected boolean hasCourseInstanceAsChild = false;
-	protected boolean hasStudentAsChild = false;
-	protected boolean hasAddressAsChild = false;
-		
-	public void recursiveTreeBuilding(Pool pool) {
-		// Below Two Steps are required for every type of child based on ChildExistFlags.
-		// 1. Extract your children based on ChildExistFlags.
-		// 2. For each and every child in every child collection, call this method recursively on the child.
-		
-		if (hasDepartmentAsChild) {
-			departmentList = pool.extractDepartmentList(tableNo, primaryKey);
-			
-			for (int i=0; i<departmentList.size(); i++)
-				departmentList.get(i).recursiveTreeBuilding(pool);
-		}
-		
-		if (hasFacultyAsChild) {
-			
-		}
-		
-		if (hasCourseAsChild) {
-			
-		}
-		
-		if (hasCourseInstanceAsChild) {
-			
-		}
-		
-		if (hasStudentAsChild) {
-		
-		}
-		
-		if (hasAddressAsChild) {
-			address = pool.extractAddress(tableNo, primaryKey);
-			// No need to recurse on address as address is a leaf node.
-		}
-		
-		return;
-	}
+	public abstract void recursiveTreeBuilding(Pool pool);
+	public abstract void recursivePrintTree();
 	
 	public void setPrimaryKey(long pk) {
 	   primaryKey = pk;	
