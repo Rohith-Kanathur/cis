@@ -13,7 +13,7 @@ public class PoolDB {
 	
 	private String dbUrl = "jdbc:mysql://localhost:3306/cis";
 	private String dbUname = "root";
-	private String dbPassword = "rohith2002";
+	private String dbPassword = "rohith";
 	private String dbDriver = "com.mysql.cj.jdbc.Driver";
 	
 	public PoolDB() {
