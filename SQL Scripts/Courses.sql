@@ -1,0 +1,18 @@
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (1,'Programming in C',1,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (2,'Programming in Python',1,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (3,'Basic Electronics',1,2,3,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (4,'Data structures ',2,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (5,'Cyber Security',2,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (6,'Analog Electronics',2,2,3,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (7,'Operating Systems',3,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (8,'Machine Learning',3,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (9,'Digital Electronics',3,2,3,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (10,'Programming in C2',1,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (11,'Programming in Python2',1,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (12,'Basic Electronics2',1,2,3,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (13,'Data structures2 ',2,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (14,'Cyber Security2',2,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (15,'Analog Electronics2',2,2,3,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (16,'Operating Systems2',3,2,1,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (17,'Machine Learning2',3,2,2,now(),now(),'rohith');
+insert into courses(CourseID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, LastUpdateDateTime, LastUpdateUser) values (18,'Digital Electronics2',3,2,3,now(),now(),'rohith');
