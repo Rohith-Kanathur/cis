@@ -19,6 +19,8 @@ public class College extends CisBo {
 		hasCourseInstanceAsChild = false;
 		hasStudentAsChild = false;
 		hasAddressAsChild = true;		
+		
+		pool = new Pool();
 	}
 
 	public long getCollegeID() {

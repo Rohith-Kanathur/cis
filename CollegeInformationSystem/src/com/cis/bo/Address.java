@@ -7,7 +7,7 @@ public class Address extends CisBo{
 	private String area;
 	private String city;
 	private String state;
-	private String pincode;
+	private String pinCode;
 	private String country;
 	
 	public Address() {
@@ -59,12 +59,12 @@ public class Address extends CisBo{
 		this.state = state;
 	}
 	
-	public String getPincode() {
-		return pincode;
+	public String getPinCode() {
+		return pinCode;
 	}
 	
-	public void setPincode(String pincode) {
-		this.pincode = pincode;
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
 	}
 	
 	public String getCountry() {

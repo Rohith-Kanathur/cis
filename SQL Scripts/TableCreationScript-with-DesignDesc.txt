@@ -224,7 +224,7 @@ DATABASE MODEL DESIGN
 			LastUpdateUser			varchar(32)				NOT NULL
 
 			CHILDREN:
-				a) CourseInstanceToStudent
+				a) Student
 
 			DESCRIPTION
 			   The CourseInstance table has two important fields ParentTableNo and ParentID.
