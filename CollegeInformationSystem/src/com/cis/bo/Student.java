@@ -4,7 +4,15 @@ public class Student extends CisBo{
 	
 	private long studentID;
 	private String name;
-	private Address address;
+	
+	public Student() {		
+		hasDepartmentAsChild = false;
+		hasFacultyAsChild = false;
+		hasCourseAsChild = false;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = false;
+		hasAddressAsChild = true;				
+	}
 	
 	public long getStudentID() {
 		return studentID;

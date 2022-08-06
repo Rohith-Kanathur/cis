@@ -7,12 +7,18 @@ public class College extends CisBo {
 	private long collegeID;
 	private String name;
 	private Address address;
-	private ArrayList<Department> departmentList;
 	
 	private Pool pool;
 	
 	public College() {
 		departmentList = new ArrayList<Department>();
+		
+		hasDepartmentAsChild = true;
+		hasFacultyAsChild = false;
+		hasCourseAsChild = false;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = false;
+		hasAddressAsChild = true;		
 	}
 
 	public long getCollegeID() {
@@ -84,4 +90,7 @@ public class College extends CisBo {
 		this.pool = pool;
 	}
 	
+	public boolean buildTreeUsingPool() {
+		return recursiveTreeBuilding(pool);
+	}
 }

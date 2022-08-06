@@ -8,10 +8,16 @@ public class CourseInstance extends CisBo{
 	private long CourseInstanceID;
 	private Date startDate;
 	private Date endDate;
-	private ArrayList<Student> studentList;
 	
 	public CourseInstance() {
 		studentList = new ArrayList<Student>();
+		
+		hasDepartmentAsChild = false;
+		hasFacultyAsChild = false;
+		hasCourseAsChild = false;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = true;
+		hasAddressAsChild = false;				
 	}
 
 	public long getCourseInstanceID() {

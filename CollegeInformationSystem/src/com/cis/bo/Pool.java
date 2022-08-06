@@ -22,20 +22,62 @@ public class Pool {
 		addressList = new ArrayList<Address>();
 		
 		poolDB = new PoolDB();
+		
+		
 	}
 	
-	public void addDepartment(Department department) {
-		departmentList.add(department);
+	// loadCollegeObject() method is called from main. User provides college name as input.
+	public boolean loadCollegeObject(String name, College college) {
+		return poolDB.loadCollege(name, college);
 	}
 	
-	public ArrayList<Department> extractDepartmentList() {
-		return departmentList;
+	// loadPool() method is called from main after calling loadCollegeObject().
+	public boolean loadPool(long collegeID) {
+		if (! poolDB.loadDepartmentList(collegeID, departmentList) )
+			return false;
+			
+		if (! poolDB.loadFacultyList(collegeID, facultyList) )
+			return false;
+				
+		if (! poolDB.loadCourseList(collegeID, courseList) )
+			return false;
+			
+		if (! poolDB.loadCourseInstanceList(collegeID, courseInstanceList) )
+			return false;
+				
+		if (! poolDB.loadStudentList(collegeID, studentList) )
+			return false;
+			
+		if (! poolDB.loadAddressList(collegeID, addressList) )
+			return false;
+				
+		return true;
+	}
+
+	public ArrayList<Department> extractDepartmentList(short parentTableNo, long parentID) {
+		ArrayList<Department> extractList = new ArrayList<Department>();
+		
+		// Loop through departmentList, match the object by ParentTableNo + ParentID.
+		// If found add it to extractList.
+		boolean bFound = false;
+		for (int i = 0; i < departmentList.size(); i++) {
+			Department obj = departmentList.get(i);
+			
+			short pTableNo = obj.getParentTableNo();
+			long pID = obj.getParentID();
+			
+			if ((parentTableNo == pTableNo) && (pID == parentID)) {
+				extractList.add(obj);
+				bFound = true;
+			}
+			else {
+				if (bFound)
+					break;
+			}
+		}
+		return extractList;
 	}
 	
-	
-	public void addFaculty(Faculty faculty) {
-		facultyList.add(faculty);
-	}
 	
 	public ArrayList<Faculty> extractFacultyList(short parentTableNo, long parentID) {
 		ArrayList<Faculty> extractList = new ArrayList<Faculty>();
@@ -60,10 +102,6 @@ public class Pool {
 		}
 		
 		return extractList;
-	}
-	
-	public void addCourse(Course course) {
-		courseList.add(course);
 	}
 	
 	public ArrayList<Course> extractCourseList(short parentTableNo, long parentID) {
@@ -91,10 +129,6 @@ public class Pool {
 		return extractList;
 	}
 	
-	public void addCourseInstance(CourseInstance courseInstance) {
-		courseInstanceList.add(courseInstance);
-	}
-	
 	public ArrayList<CourseInstance> extractCourseInstanceList(short parentTableNo, long parentID) {
 		ArrayList<CourseInstance> extractList = new ArrayList<CourseInstance>();
 	
@@ -118,10 +152,6 @@ public class Pool {
 		}
 		
 		return extractList;
-	}
-	
-	public void addStudent(Student student) {
-		studentList.add(student);
 	}
 	
 	public ArrayList<Student> extractStudentList(short parentTableNo, long parentID) {
@@ -149,10 +179,6 @@ public class Pool {
 		return extractList;
 	}
 	
-	public void addAddress(Address address) {
-		addressList.add(address);
-	}
-	
 	public ArrayList<Address> extractAddressList(short parentTableNo, long parentID) {
 		ArrayList<Address> extractList = new ArrayList<Address>();
 	
@@ -177,14 +203,5 @@ public class Pool {
 		
 		return extractList;
 	}
-	
-	public boolean loadPool(long collegeID) {
-		if (! poolDB.loadDepartmentList(collegeID, departmentList) )
-			return false;
-			
-		if (! poolDB.loadFacultyList(collegeID, facultyList) )
-			return false;
-				
-		return true;
-	}
+
 }

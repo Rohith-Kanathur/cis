@@ -5,7 +5,15 @@ public class Faculty extends CisBo {
 	private long facultyID;
 	private String name;
 	private short designation;
-	private Address address;
+	
+	public Faculty() {
+		hasDepartmentAsChild = false;
+		hasFacultyAsChild = false;
+		hasCourseAsChild = false;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = false;
+		hasAddressAsChild = true;		
+	}
 	
 	public long getFacultyID() {
 		return facultyID;

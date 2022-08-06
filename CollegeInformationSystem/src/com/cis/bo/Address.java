@@ -10,6 +10,15 @@ public class Address extends CisBo{
 	private String pincode;
 	private String country;
 	
+	public Address() {
+		hasDepartmentAsChild = false;
+		hasFacultyAsChild = false;
+		hasCourseAsChild = false;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = false;
+		hasAddressAsChild = false;				
+	}
+	
 	public long getAddressID() {
 		return addressID;
 	}

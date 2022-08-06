@@ -6,13 +6,17 @@ public class Department extends CisBo {
 	
 	private long departmentID;
 	private String name;
-	private Address address;
-	private ArrayList<Faculty> facultyList;
-	private ArrayList<Course> courseList;
 	
 	public Department() {
 		this.facultyList = new ArrayList<Faculty>();
 		this.courseList = new ArrayList<Course>();
+		
+		hasDepartmentAsChild = false;
+		hasFacultyAsChild = true;
+		hasCourseAsChild = true;
+		hasCourseInstanceAsChild = false;
+		hasStudentAsChild = false;
+		hasAddressAsChild = true;		
 	}
 	
 	public long getDepartmentID() {
