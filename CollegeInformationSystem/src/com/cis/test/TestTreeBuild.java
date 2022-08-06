@@ -15,19 +15,17 @@ public class TestTreeBuild {
 	    	return;
 	    }
 	    
-	    System.out.println(college.getCollegeID());
-	    System.out.println(college.getName());
-	    System.out.println(college.getCreateDateTime());
-	    System.out.println(college.getLastUpdateDateTime());
-	    System.out.println(college.getLastUpdateUser());
+	    System.out.println(college);
 	    
 	    /*
 	    // Get Current Time
 	    LocalTime t1 = LocalTime.now(); 
+	    */
 	    
 	    college.getPool().loadPool(college.getCollegeID());
-	    college.buildTreeUsingPool();
+	    //college.buildTreeUsingPool();
 	    
+	    /*
 	    // Get Current Time
 	    LocalTime t2 = LocalTime.now();
 	    */

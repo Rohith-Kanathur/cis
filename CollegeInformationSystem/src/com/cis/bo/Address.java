@@ -11,12 +11,37 @@ public class Address extends CisBo{
 	private String country;
 	
 	public Address() {
+		tableNo = 7;
+		
 		hasDepartmentAsChild = false;
 		hasFacultyAsChild = false;
 		hasCourseAsChild = false;
 		hasCourseInstanceAsChild = false;
 		hasStudentAsChild = false;
 		hasAddressAsChild = false;				
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(addressID);
+		sb.append("\t");	
+		sb.append(streetAddress);
+		sb.append("\t");
+		sb.append(area);
+		sb.append("\t");
+		sb.append(city);
+		sb.append("\t");
+		sb.append(state);
+		sb.append("\t");
+		sb.append(pinCode);
+		sb.append("\t");
+		sb.append(country);
+		sb.append("\t");
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
 	}
 	
 	public long getAddressID() {

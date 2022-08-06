@@ -11,7 +11,12 @@ public class College extends CisBo {
 	private Pool pool;
 	
 	public College() {
+		tableNo = 1;
+		
 		departmentList = new ArrayList<Department>();
+		
+		parentTableNo = 0;
+		parentID = 0;
 		
 		hasDepartmentAsChild = true;
 		hasFacultyAsChild = false;
@@ -23,6 +28,19 @@ public class College extends CisBo {
 		pool = new Pool();
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(collegeID);
+		sb.append("\t");	
+		sb.append(name);
+		sb.append("\t");	
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
+	}
+	
 	public long getCollegeID() {
 		return collegeID;
 	}
@@ -92,7 +110,8 @@ public class College extends CisBo {
 		this.pool = pool;
 	}
 	
-	public boolean buildTreeUsingPool() {
-		return recursiveTreeBuilding(pool);
+	public void buildTreeUsingPool() {
+		recursiveTreeBuilding(pool);
+		return;
 	}
 }

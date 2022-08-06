@@ -5,12 +5,15 @@ import java.util.Date;
 
 public abstract class CisBo {
 	
-	private long collegeID;	
-	private short parentTableNo;
-	private long parentID;
-	private Date createDateTime;
-	private Date lastUpdateDateTime;
-	private String lastUpdateUser;
+	protected short tableNo;
+	protected long primaryKey;
+	
+	protected long collegeID;	
+	protected short parentTableNo;
+	protected long parentID;
+	protected Date createDateTime;
+	protected Date lastUpdateDateTime;
+	protected String lastUpdateUser;
 	
 	// Based on user actions in the UI, this will be set to either insert or update or delete.
 	// Based on this, we either generate an insert SQL or update SQL or delete SQL or Nothing.
@@ -40,13 +43,62 @@ public abstract class CisBo {
 	protected boolean hasStudentAsChild = false;
 	protected boolean hasAddressAsChild = false;
 		
-	public boolean recursiveTreeBuilding(Pool pool) {
+	public void recursiveTreeBuilding(Pool pool) {
 		// Below Two Steps are required for every type of child based on ChildExistFlags.
-		   // 1. extract your children based on ChildExistFlags
-		   // 2. For each and every child in every child collection, call this method recursively on the child.
+		// 1. Extract your children based on ChildExistFlags.
+		// 2. For each and every child in every child collection, call this method recursively on the child.
 		
+		if (hasDepartmentAsChild) {
+			departmentList = pool.extractDepartmentList(tableNo, primaryKey);
+			
+			for (int i=0; i<departmentList.size(); i++)
+				departmentList.get(i).recursiveTreeBuilding(pool);
+		}
 		
-		return true;
+		if (hasFacultyAsChild) {
+			
+		}
+		
+		if (hasCourseAsChild) {
+			
+		}
+		
+		if (hasCourseInstanceAsChild) {
+			
+		}
+		
+		if (hasStudentAsChild) {
+		
+		}
+		
+		if (hasAddressAsChild) {
+			address = pool.extractAddress(tableNo, primaryKey);
+			// No need to recurse on address as address is a leaf node.
+		}
+		
+		return;
+	}
+	
+	public void setPrimaryKey(long pk) {
+	   primaryKey = pk;	
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(collegeID);
+		sb.append("\t");
+		sb.append(parentTableNo);
+		sb.append("\t");
+		sb.append(parentID);
+		sb.append("\t");
+		sb.append(createDateTime.toString());
+		sb.append("\t");
+		sb.append(lastUpdateDateTime.toString());
+		sb.append("\t");
+		sb.append(lastUpdateUser);
+		sb.append("\t");
+
+		return sb.toString(); 
 	}
 	
 	public long getCollegeID() {

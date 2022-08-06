@@ -6,12 +6,27 @@ public class Student extends CisBo{
 	private String name;
 	
 	public Student() {		
+		tableNo = 6;
+		
 		hasDepartmentAsChild = false;
 		hasFacultyAsChild = false;
 		hasCourseAsChild = false;
 		hasCourseInstanceAsChild = false;
 		hasStudentAsChild = false;
 		hasAddressAsChild = true;				
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(studentID);
+		sb.append("\t");	
+		sb.append(name);
+		sb.append("\t");
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
 	}
 	
 	public long getStudentID() {

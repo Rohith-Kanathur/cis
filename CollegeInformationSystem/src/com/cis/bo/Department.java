@@ -8,6 +8,8 @@ public class Department extends CisBo {
 	private String name;
 	
 	public Department() {
+		tableNo = 2;
+		
 		this.facultyList = new ArrayList<Faculty>();
 		this.courseList = new ArrayList<Course>();
 		
@@ -17,6 +19,19 @@ public class Department extends CisBo {
 		hasCourseInstanceAsChild = false;
 		hasStudentAsChild = false;
 		hasAddressAsChild = true;		
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(departmentID);
+		sb.append("\t");	
+		sb.append(name);
+		sb.append("\t");	
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
 	}
 	
 	public long getDepartmentID() {
@@ -117,5 +132,6 @@ public class Department extends CisBo {
 		
 		return false;
 	}
+	
 	
 }

@@ -87,6 +87,7 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   department = new Department();
+				   department.setPrimaryKey(rs.getLong("DepartmentID"));
 				   department.setDepartmentID(rs.getLong("DepartmentID"));
 				   department.setName(rs.getString("Name"));
 				   department.setCollegeID(rs.getLong("CollegeID"));
@@ -122,9 +123,11 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   faculty = new Faculty();
+				   faculty.setPrimaryKey(rs.getLong("FacultyID"));
 				   faculty.setFacultyID(rs.getLong("FacultyID"));
 				   faculty.setName(rs.getString("Name"));
 				   faculty.setCollegeID(rs.getLong("CollegeID"));
+				   faculty.setDesignation(rs.getShort("Designation"));
 				   faculty.setParentTableNo(rs.getShort("ParentTableNo"));
 				   faculty.setParentID(rs.getLong("ParentID"));
 				   faculty.setCreateDateTime(rs.getDate("CreateDateTime"));
@@ -157,6 +160,7 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   course = new Course();
+				   course.setPrimaryKey(rs.getLong("CourseID"));
 				   course.setCourseID(rs.getLong("CourseID"));
 				   course.setName(rs.getString("Name"));
 				   course.setCollegeID(rs.getLong("CollegeID"));
@@ -180,7 +184,7 @@ public class PoolDB {
 		
 		String sql = "select CourseInstanceID, StartDate, EndDate, CollegeID, ParentTableNo, ParentID, CreateDateTime, "
 				   + "LastUpdateDateTime, LastUpdateUser "
-				   + "from department where CollegeID = ? order by ParentTableNo, ParentID";
+				   + "from courseinstances where CollegeID = ? order by ParentTableNo, ParentID";
 		
 		// Load courseInstanceList
 		CourseInstance courseInstance = null;
@@ -192,6 +196,7 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   courseInstance = new CourseInstance();
+				   courseInstance.setPrimaryKey(rs.getLong("CourseInstanceID"));
 				   courseInstance.setCourseInstanceID(rs.getLong("CourseInstanceID"));
 				   courseInstance.setStartDate(rs.getDate("StartDate"));
 				   courseInstance.setEndDate(rs.getDate("EndDate"));
@@ -216,7 +221,7 @@ public class PoolDB {
 		
 		String sql = "select StudentID, Name, CollegeID, ParentTableNo, ParentID, CreateDateTime, "
 				   + "LastUpdateDateTime, LastUpdateUser "
-				   + "from courses where CollegeID = ? order by ParentTableNo, ParentID";
+				   + "from student where CollegeID = ? order by ParentTableNo, ParentID";
 		
 		// Load studentList
 		Student student = null;
@@ -228,6 +233,7 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   student = new Student();
+				   student.setPrimaryKey(rs.getLong("StudentID"));
 				   student.setStudentID(rs.getLong("StudentID"));
 				   student.setName(rs.getString("Name"));
 				   student.setCollegeID(rs.getLong("CollegeID"));
@@ -253,7 +259,7 @@ public class PoolDB {
 		String sql = "select AddressID, StreetAddress, Area, City, State, Pincode, Country, " 
 				   + "CollegeID, ParentTableNo, ParentID, CreateDateTime, "
 				   + "LastUpdateDateTime, LastUpdateUser "
-				   + "from address where AddressID = ? order by ParentTableNo, ParentID";
+				   + "from address where CollegeID = ? order by ParentTableNo, ParentID";
 		
 		// Load addressList
 		Address address = null;
@@ -265,6 +271,7 @@ public class PoolDB {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				   address = new Address();
+				   address.setPrimaryKey(rs.getLong("AddressID"));
 				   address.setAddressID(rs.getLong("AddressID"));
 				   address.setStreetAddress(rs.getString("StreetAddress"));
 				   address.setArea(rs.getString("Area"));
@@ -302,6 +309,7 @@ public class PoolDB {
 			
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				   college.setPrimaryKey(rs.getLong("CollegeID"));
 				   college.setCollegeID(rs.getLong("CollegeID"));
 				   college.setName(rs.getString("Name"));
 				   college.setCreateDateTime(rs.getDate("CreateDateTime"));

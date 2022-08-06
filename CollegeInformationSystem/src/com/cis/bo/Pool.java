@@ -33,23 +33,65 @@ public class Pool {
 	
 	// loadPool() method is called from main after calling loadCollegeObject().
 	public boolean loadPool(long collegeID) {
+		
 		if (! poolDB.loadDepartmentList(collegeID, departmentList) )
 			return false;
-			
+		
+		// Debug Code
+		System.out.println("Printing Department Objects");
+		for (int i = 0; i < departmentList.size(); i++)
+			System.out.print(departmentList.get(i));
+		System.out.println();
+		
+		
 		if (! poolDB.loadFacultyList(collegeID, facultyList) )
 			return false;
-				
+		
+		// Debug Code
+		System.out.println("Printing Faculty Objects");
+		for (int i = 0; i < facultyList.size(); i++)
+				System.out.print(facultyList.get(i));
+		System.out.println();		
+		
+			
 		if (! poolDB.loadCourseList(collegeID, courseList) )
 			return false;
-			
+		
+		// Debug Code
+		System.out.println("Printing Course Objects");
+		for (int i = 0; i < courseList.size(); i++)
+			System.out.print(courseList.get(i));
+		System.out.println();	
+		
+		
 		if (! poolDB.loadCourseInstanceList(collegeID, courseInstanceList) )
 			return false;
-				
+		
+		// Debug Code
+		System.out.println("Printing Course Instance Objects");
+		for (int i = 0; i < courseInstanceList.size(); i++)
+			System.out.print(courseInstanceList.get(i));
+		System.out.println();	
+		
+		
 		if (! poolDB.loadStudentList(collegeID, studentList) )
 			return false;
-			
+		
+		// Debug Code
+		System.out.println("Printing Student Objects");
+		for (int i = 0; i < studentList.size(); i++)
+			System.out.print(studentList.get(i));
+		System.out.println();	
+		
+		
 		if (! poolDB.loadAddressList(collegeID, addressList) )
 			return false;
+		
+		// Debug Code
+		System.out.println("Printing Address Objects");
+		for (int i = 0; i < addressList.size(); i++)
+				System.out.print(addressList.get(i));
+		System.out.println();
 				
 		return true;
 	}
@@ -179,12 +221,11 @@ public class Pool {
 		return extractList;
 	}
 	
-	public ArrayList<Address> extractAddressList(short parentTableNo, long parentID) {
-		ArrayList<Address> extractList = new ArrayList<Address>();
+	public Address extractAddress(short parentTableNo, long parentID) {
+		Address address = null;
 	
 		// Loop through addressList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
+		// If found, return the address object.
 		for (int i = 0; i < addressList.size(); i++) {
 			Address obj = addressList.get(i);
 			
@@ -192,16 +233,12 @@ public class Pool {
 			long pID = obj.getParentID();
 			
 			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
+				address = obj;
+				break; // Only one address exists as a child to any given entity.
 			}
 		}
 		
-		return extractList;
+		return address;
 	}
 
 }

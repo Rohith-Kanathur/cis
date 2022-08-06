@@ -9,6 +9,8 @@ public class Course extends CisBo{
 	private String name;
 
 	public Course() {
+		tableNo = 4;
+		
 		courseInstanceList = new ArrayList<CourseInstance>();
 		
 		hasDepartmentAsChild = false;
@@ -18,7 +20,20 @@ public class Course extends CisBo{
 		hasStudentAsChild = false;
 		hasAddressAsChild = false;				
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(courseID);
+		sb.append("\t");	
+		sb.append(name);
+		sb.append("\t");
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
 
+		return sb.toString(); 
+	}
+	
 	public long getCourseID() {
 		return courseID;
 	}

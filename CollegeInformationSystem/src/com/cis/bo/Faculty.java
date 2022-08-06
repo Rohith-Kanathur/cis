@@ -7,12 +7,29 @@ public class Faculty extends CisBo {
 	private short designation;
 	
 	public Faculty() {
+		tableNo = 3;
+		
 		hasDepartmentAsChild = false;
 		hasFacultyAsChild = false;
 		hasCourseAsChild = false;
 		hasCourseInstanceAsChild = false;
 		hasStudentAsChild = false;
 		hasAddressAsChild = true;		
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(facultyID);
+		sb.append("\t");	
+		sb.append(name);
+		sb.append("\t");
+		sb.append(designation);
+		sb.append("\t");
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
 	}
 	
 	public long getFacultyID() {

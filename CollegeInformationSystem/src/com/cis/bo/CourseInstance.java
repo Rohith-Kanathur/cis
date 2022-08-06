@@ -5,11 +5,13 @@ import java.util.Date;
 
 public class CourseInstance extends CisBo{
 	
-	private long CourseInstanceID;
+	private long courseInstanceID;
 	private Date startDate;
 	private Date endDate;
 	
 	public CourseInstance() {
+		tableNo = 5;
+		
 		studentList = new ArrayList<Student>();
 		
 		hasDepartmentAsChild = false;
@@ -19,13 +21,28 @@ public class CourseInstance extends CisBo{
 		hasStudentAsChild = true;
 		hasAddressAsChild = false;				
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(courseInstanceID);
+		sb.append("\t");	
+		sb.append(startDate);
+		sb.append("\t");
+		sb.append(endDate);
+		sb.append("\t");
+		
+		sb.append(super.toString());
+		sb.append(System.getProperty("line.separator"));
+
+		return sb.toString(); 
+	}
 
 	public long getCourseInstanceID() {
-		return CourseInstanceID;
+		return courseInstanceID;
 	}
 
 	public void setCourseInstanceID(long courseInstanceID) {
-		CourseInstanceID = courseInstanceID;
+		this.courseInstanceID = courseInstanceID;
 	}
 
 	public ArrayList<Student> getStudentList() {
