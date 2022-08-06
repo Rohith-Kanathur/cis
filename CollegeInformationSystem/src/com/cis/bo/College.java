@@ -84,5 +84,4 @@ public class College extends CisBo {
 		this.pool = pool;
 	}
 	
-	
 }

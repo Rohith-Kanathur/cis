@@ -65,8 +65,4 @@ public class Address extends CisBo{
 	public void setCountry(String country) {
 		this.country = country;
 	}
-	
-	
-	
-
 }

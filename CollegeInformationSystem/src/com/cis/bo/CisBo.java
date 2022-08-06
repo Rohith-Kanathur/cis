@@ -83,4 +83,5 @@ public abstract class CisBo {
 	public void setDirtyFlag(boolean dirtyFlag) {
 		this.dirtyFlag = dirtyFlag;
 	}
+	
 }

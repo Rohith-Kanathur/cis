@@ -74,6 +74,5 @@ public class CourseInstance extends CisBo{
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
-	
+		
 }

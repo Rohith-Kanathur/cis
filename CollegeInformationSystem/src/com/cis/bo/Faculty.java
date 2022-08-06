@@ -39,5 +39,4 @@ public class Faculty extends CisBo {
 		this.designation = designation;
 	}
 	
-	
 }

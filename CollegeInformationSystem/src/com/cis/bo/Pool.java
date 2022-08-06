@@ -185,7 +185,6 @@ public class Pool {
 		if (! poolDB.loadFacultyList(collegeID, facultyList) )
 			return false;
 				
-		
 		return true;
 	}
 }
