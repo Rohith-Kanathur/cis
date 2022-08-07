@@ -25,7 +25,13 @@ public abstract class CisBo {
 	
 	public abstract void recursiveTreeBuilding(Pool pool);
 	public abstract void recursivePrintTree();
-	
+
+	public short getTableNo() {
+		return tableNo;
+	}
+	public long getPrimaryKey() {
+		   return primaryKey;	
+	}
 	public void setPrimaryKey(long pk) {
 	   primaryKey = pk;	
 	}

@@ -2,6 +2,8 @@ package com.cis.bo;
 
 import java.util.ArrayList;
 
+import com.cis.db.CollegeDB;
+
 public class College extends CisBo {
 	
 	private long collegeID;
@@ -53,6 +55,13 @@ public class College extends CisBo {
 			departmentList.get(i).recursivePrintTree();
 		
 		address.recursivePrintTree();		
+	}
+	
+	public boolean loadCollegeTreeUsingBruteForce() {
+		// Load from Database where children are read for each parent in a loop.
+		CollegeDB collegeDB = new CollegeDB();
+		
+		return collegeDB.loadCollegeTreeUsingBruteForce(this);
 	}
 	
 	public String toString() {
