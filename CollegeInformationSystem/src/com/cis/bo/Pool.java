@@ -1,26 +1,30 @@
 package com.cis.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.cis.db.PoolDB;
 
 public class Pool {
-	private ArrayList<Department> departmentList;
-	private ArrayList<Faculty> facultyList;
-	private ArrayList<Course> courseList;
-	private ArrayList<CourseInstance> courseInstanceList;
-	private ArrayList<Student> studentList;
-	private ArrayList<Address> addressList;
+	private HashMap<Short, HashMap<Long, ArrayList<Faculty>>> facultyMaps;
+	private HashMap<Short, HashMap<Long, ArrayList<Course>>> courseMaps;
+	private HashMap<Short, HashMap<Long, ArrayList<CourseInstance>>> courseInstanceMaps;
+	private HashMap<Short, HashMap<Long, ArrayList<Student>>> studentMaps;
+	private HashMap<Short, HashMap<Long, Address>> addressMaps;
+	
+	private ArrayList<Department> departmentList; 
+
 	private PoolDB poolDB;
 	
 	public Pool() {
 		departmentList = new ArrayList<Department>();
-		facultyList = new ArrayList<Faculty>();
-		courseList = new ArrayList<Course>();
-		courseInstanceList = new ArrayList<CourseInstance>();
-		studentList = new ArrayList<Student>();
-		addressList = new ArrayList<Address>();
-		
+
+		facultyMaps = new HashMap<Short, HashMap<Long, ArrayList<Faculty>>>();
+		courseMaps = new HashMap<Short, HashMap<Long, ArrayList<Course>>>();
+		courseInstanceMaps = new HashMap<Short, HashMap<Long, ArrayList<CourseInstance>>>();
+		studentMaps = new HashMap<Short, HashMap<Long, ArrayList<Student>>>();
+		addressMaps = new HashMap<Short, HashMap<Long, Address>>();
+				
 		poolDB = new PoolDB();
 		
 		
@@ -33,7 +37,6 @@ public class Pool {
 	
 	// loadPool() method is called from main after calling loadCollegeObject().
 	public boolean loadPool(long collegeID) {
-		
 		if (! poolDB.loadDepartmentList(collegeID, departmentList) )
 			return false;
 		
@@ -45,7 +48,7 @@ public class Pool {
 		System.out.println();
 		*/
 		
-		if (! poolDB.loadFacultyList(collegeID, facultyList) )
+		if (! poolDB.loadFacultyList(collegeID, facultyMaps) )
 			return false;
 		
 		// Debug Code
@@ -56,7 +59,7 @@ public class Pool {
 		System.out.println();		
 		*/
 			
-		if (! poolDB.loadCourseList(collegeID, courseList) )
+		if (! poolDB.loadCourseList(collegeID, courseMaps) )
 			return false;
 		
 		// Debug Code
@@ -67,7 +70,7 @@ public class Pool {
 		System.out.println();	
 		*/
 		
-		if (! poolDB.loadCourseInstanceList(collegeID, courseInstanceList) )
+		if (! poolDB.loadCourseInstanceList(collegeID, courseInstanceMaps) )
 			return false;
 		
 		// Debug Code
@@ -78,7 +81,7 @@ public class Pool {
 		System.out.println();	
 		*/
 		
-		if (! poolDB.loadStudentList(collegeID, studentList) )
+		if (! poolDB.loadStudentList(collegeID, studentMaps) )
 			return false;
 		
 		// Debug Code
@@ -89,7 +92,7 @@ public class Pool {
 		System.out.println();	
 		*/
 		
-		if (! poolDB.loadAddressList(collegeID, addressList) )
+		if (! poolDB.loadAddressList(collegeID, addressMaps) )
 			return false;
 		
 		// Debug Code
@@ -104,148 +107,27 @@ public class Pool {
 	}
 
 	public ArrayList<Department> extractDepartmentList(short parentTableNo, long parentID) {
-		ArrayList<Department> extractList = new ArrayList<Department>();
-		
-		// Loop through departmentList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
-		for (int i = 0; i < departmentList.size(); i++) {
-			Department obj = departmentList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
-			}
-		}
-		return extractList;
+		return departmentList;
 	}
 	
-	
 	public ArrayList<Faculty> extractFacultyList(short parentTableNo, long parentID) {
-		ArrayList<Faculty> extractList = new ArrayList<Faculty>();
-	
-		// Loop through facultyList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
-		for (int i = 0; i < facultyList.size(); i++) {
-			Faculty obj = facultyList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
-			}
-		}
-		
-		return extractList;
+		return facultyMaps.get(parentTableNo).get(parentID);
 	}
 	
 	public ArrayList<Course> extractCourseList(short parentTableNo, long parentID) {
-		ArrayList<Course> extractList = new ArrayList<Course>();
-	
-		// Loop through courseList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
-		for (int i = 0; i < courseList.size(); i++) {
-			Course obj = courseList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
-			}
-		}
-		
-		return extractList;
+		return courseMaps.get(parentTableNo).get(parentID);
 	}
 	
 	public ArrayList<CourseInstance> extractCourseInstanceList(short parentTableNo, long parentID) {
-		ArrayList<CourseInstance> extractList = new ArrayList<CourseInstance>();
-	
-		// Loop through courseInstanceList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
-		for (int i = 0; i < courseInstanceList.size(); i++) {
-			CourseInstance obj = courseInstanceList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
-			}
-		}
-		
-		return extractList;
+		return courseInstanceMaps.get(parentTableNo).get(parentID);
 	}
 	
 	public ArrayList<Student> extractStudentList(short parentTableNo, long parentID) {
-		ArrayList<Student> extractList = new ArrayList<Student>();
-	
-		// Loop through studentList, match the object by ParentTableNo + ParentID.
-		// If found add it to extractList.
-		boolean bFound = false;
-		for (int i = 0; i < studentList.size(); i++) {
-			Student obj = studentList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				extractList.add(obj);
-				bFound = true;
-			}
-			else {
-				if (bFound)
-					break;
-			}
-		}
-		
-		return extractList;
+		return studentMaps.get(parentTableNo).get(parentID);
 	}
 	
 	public Address extractAddress(short parentTableNo, long parentID) {
-		Address address = null;
-	
-		// Loop through addressList, match the object by ParentTableNo + ParentID.
-		// If found, return the address object.
-		for (int i = 0; i < addressList.size(); i++) {
-			Address obj = addressList.get(i);
-			
-			short pTableNo = obj.getParentTableNo();
-			long pID = obj.getParentID();
-			
-			if ((parentTableNo == pTableNo) && (pID == parentID)) {
-				address = obj;
-				break; // Only one address exists as a child to any given entity.
-			}
-		}
-		
-		return address;
+		return addressMaps.get(parentTableNo).get(parentID);
 	}
 
 }
