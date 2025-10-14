@@ -1,2 +1,10 @@
 # cis
-College Information System
+
+This project is titled “In Memory Depth First Tree Construction of Hierarchical Data in a RDBMS”. This allows for storage and efficient retrieval of hierarchical data using a relational database.
+Paper Link: https://ieeexplore.ieee.org/document/10334098
+
+In brute approach, multiple database hits are required for retrieval of children of a given parent. This operation is very expensive. Therefore all descendents of a root are retrieved from a database table in one shot using the root identifier. The root identifier exists in all tables and this ensures that one and only database hit is required for each table. Effectively a two level tree is retrieved from the database and the complete tree is constructed in memory. A depth first recursive tree construction algorithm is used.
+
+Diving a little deeper into the implementation details, an example I used to implement this algorithm was a college information system. This consists of hierarchical data like college, department, faculty, courses, course instances, students and addresses that are related to each other using one to one and one to many relationships. To retrieve the hierarchical data of a college, the data from the tables is retrieved using college id. The college id is the root identifier and exists in all tables. In addition every table contains the parent information using parent id and parent table number. Data is retrieved from the database and stored in a hashmap of hashmaps (int to int to lists) and then the college tree is constructed in memory. This also involves object oriented design and development of various entities and includes abstract classes, encapsulation, inheritance and polymorphism. Java date-time API’s were used to measure time taken by brute force approach and the efficient in-memorytree construction approach. 7 times improvement was observed to retrieve 10 records and 25 times improvement for 20K records.
+
+Environment, Tools and Technologies used: Java, JDBC, MySQL, Eclipse (Ver 2022-03)
